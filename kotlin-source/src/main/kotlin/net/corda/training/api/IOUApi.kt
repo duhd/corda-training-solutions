@@ -167,7 +167,7 @@ class IOUApi(val rpcOps: CordaRPCOps) {
                   @QueryParam(value = "amount") amount: Int,
                   @QueryParam(value = "currency") currency: String): Response {
         val linearId = UniqueIdentifier.fromString(id)
-        val settleAmount = Amount(amount.toLong() * 100, Currency.getInstance(currency))
+        val settleAmount = Amount(amount.toLong(), Currency.getInstance(currency))
 
         try {
             rpcOps.startFlow(::IOUSettleFlow, linearId, settleAmount).returnValue.get()
@@ -188,7 +188,7 @@ class IOUApi(val rpcOps: CordaRPCOps) {
     @Path("self-issue-cash")
     fun selfIssueCash(@QueryParam(value = "amount") amount: Int,
                       @QueryParam(value = "currency") currency: String): Response {
-        val issueAmount = Amount(amount.toLong() * 100, Currency.getInstance(currency))
+        val issueAmount = Amount(amount.toLong(), Currency.getInstance(currency))
 
         try {
             val cashState = rpcOps.startFlow(::SelfIssueCashFlow, issueAmount).returnValue.get()
