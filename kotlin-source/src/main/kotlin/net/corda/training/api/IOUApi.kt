@@ -120,7 +120,7 @@ class IOUApi(val rpcOps: CordaRPCOps) {
         val lender = rpcOps.wellKnownPartyFromX500Name(CordaX500Name.parse(party)) ?: throw IllegalArgumentException("Unknown party name.")
         // Create a new IOU state using the parameters given.
         try {
-            val state = IOUState(Amount(amount.toLong() * 100, Currency.getInstance(currency)), lender, me)
+            val state = IOUState(Amount(amount.toLong(), Currency.getInstance(currency)), lender, me)
             // Start the IOUIssueFlow. We block and waits for the flow to return.
             val result = rpcOps.startTrackedFlow(::IOUIssueFlow, state).returnValue.get()
             // Return the response.
